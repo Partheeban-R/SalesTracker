@@ -1,0 +1,5 @@
+package SalseTracker
+
+func AutoSyncData() {
+
+}
