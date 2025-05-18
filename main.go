@@ -3,6 +3,7 @@ package main
 import (
 	db "SalesTracker/DB"
 	router "SalesTracker/Router"
+	St "SalesTracker/SalseTracker"
 	"fmt"
 	"log"
 	"net/http"
@@ -72,7 +73,7 @@ func main() {
 	r := mux.NewRouter()
 	router.RegisterRoutes(r)
 
-
+	go St.AutoSyncData()
 	log.Println("Server Started")
 	log.Fatal(http.ListenAndServe(":29091", r))
 

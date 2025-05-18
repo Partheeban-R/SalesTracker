@@ -1,10 +1,7 @@
 package Router
 
 import (
-	// integration "SalesAnalytics/Integration"
-	// "SalesAnalytics/handlers"
-
-	Api "SalesTracker/Task"
+	SalseTracker "SalesTracker/SalseTracker"
 	"log"
 	"net/http"
 
@@ -12,14 +9,8 @@ import (
 )
 
 func RegisterRoutes(pRouter *mux.Router) {
-		log.Println("RegisterRoutes (-)")
-
-	// pRouter.HandleFunc("/api/refresh", Api.DemoApi).Methods(http.MethodGet)
-	pRouter.HandleFunc("/api/refresh/{id}", Api.DemoApi).Methods(http.MethodGet)
-	// r.HandleFunc("/api/revenue/{id}", handlers.RevenueHandler)
-	// r.HandleFunc("/api/nProducts/{id}", integration.TopNProducts)
-	// r.HandleFunc("/api/customers/{id}", integration.CustomerAnalysis)
-	// r.HandleFunc("/api/calculations/{id}", integration.SalesCalculations)
-		log.Println("RegisterRoutes (-)")
-
+	log.Println("RegisterRoutes (-)")
+	pRouter.HandleFunc("/SyncData", SalseTracker.SyncDataApi).Methods(http.MethodGet)
+	pRouter.HandleFunc("/getRevenue/{id}", SalseTracker.GetRevenueApi).Methods(http.MethodGet)
+	log.Println("RegisterRoutes (-)")
 }

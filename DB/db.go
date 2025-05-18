@@ -8,7 +8,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// Structure to hold database connection details
+
 type DatabaseType struct {
 	Server   string
 	Port     int
@@ -19,14 +19,11 @@ type DatabaseType struct {
 	DB       string
 }
 
-// structure to hold all db connection details used in this program
+
 type AllUsedDatabases struct {
 	MariaDB       DatabaseType
 }
 
-// ---------------------------------------------------------------------------------
-// function opens the db connection and return connection variable
-// ---------------------------------------------------------------------------------
 func MakeDB_Conn(pDBtype string) (*sql.DB, error) {
 	lDbDetails := new(AllUsedDatabases)
 	lDbDetails.Init()
@@ -48,7 +45,7 @@ func MakeDB_Conn(pDBtype string) (*sql.DB, error) {
 	if lLocalDBtype == "mysql" {
 		lConnString = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", lDataBaseConnection.User, lDataBaseConnection.Password, lDataBaseConnection.Server, lDataBaseConnection.Port, lDataBaseConnection.Database)
 	}
-log.Println("conn :",lConnString)
+
 	//make a connection to db
 	if lLocalDBtype != "" {
 		lDb, lErr = sql.Open(lLocalDBtype, lConnString)
@@ -61,23 +58,16 @@ log.Println("conn :",lConnString)
 	return lDb, lErr
 }
 
-// --------------------------------------------------------------------
-//
-//	execute bulk inserts
-//
-// --------------------------------------------------------------------
-func ExecuteBulkStatement(db *sql.DB, sqlStringValues string, sqlString string) error {
-	log.Println("ExecuteBulkStatement+")
-	//trim the last ,
-	sqlStringValues = sqlStringValues[0 : len(sqlStringValues)-1]
-	_, err := db.Exec(sqlString + sqlStringValues)
-	if err != nil {
-		log.Println(err)
-		log.Println("ExecuteBulkStatement-")
-		return err
-	} else {
-		log.Println("inserted Sucessfully")
+
+func InsertBulkData(pDB *sql.DB, pSqlStringValues string, pSqlString string) error {
+	log.Println("InsertBulkData (+)")
+	pSqlStringValues = pSqlStringValues[0 : len(pSqlStringValues)-1]
+	_, lErr := pDB.Exec(pSqlString + pSqlStringValues)
+	log.Println("pSqlString + pSqlStringValues :\n",pSqlString + pSqlStringValues)
+	if lErr != nil {
+		log.Println(lErr)
+		return lErr
 	}
-	log.Println("ExecuteBulkStatement-")
+	log.Println("InsertBulkData (-)")
 	return nil
 }
